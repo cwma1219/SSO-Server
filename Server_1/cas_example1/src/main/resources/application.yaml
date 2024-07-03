@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: cas_example1
+  data:
+    redis:
+#      host: 127.0.0.1
+      host: redis_1
+      port: 6379
+
+server:
+  port: 9091
+
+jwt:
+  expire: 3600
+  iss: socailnetwork
+  subject: Authorization
+  prefix: "Bearer "
+  key: GI3XyL0hYKvLAMWmwkzEm2SoIakXMDLARpnGyrgfsx9hVdUbf/xEdN79Ny6FgyJixlxaswdSAro=

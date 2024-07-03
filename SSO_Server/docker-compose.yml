@@ -1,0 +1,51 @@
+version: '3.8'
+networks:
+  cas-net:
+services:
+  cas_ui:
+    build:
+      context: /home/casservertest/cas/cas_ui
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+    networks:
+      - cas-net
+  cas:
+    build:
+      context: /home/casservertest/cas/cas
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    networks:
+      - cas-net
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysql:3306/cas?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
+      - data.redis.host=redis
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: mysql:8.4.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    networks:
+      - cas-net
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - cas-net
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      timeout: 10s

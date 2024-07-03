@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: cas
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+  datasource:
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/cas?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://mysql:3306/cas?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
+  data:
+    redis:
+      host: redis
+#      host: host.docker.internal
+      port: 6379
+
+jwt:
+  expire: 3600
+  iss: socailnetwork
+  subject: Authorization
+  prefix: "Bearer "
+  key: ENC(GI3XyL0hYKvLAMWmwkzEm2SoIakXMDLARpnGyrgfsx9hVdUbf/xEdN79Ny6FgyJixlxaswdSAro=)
+
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.RandomIvGenerator
+
+server:
+  port: 9090
+
+logging:
+  level:
+    root: INFO
+    org.example.cas: DEBUG
