@@ -23,8 +23,6 @@ public class TokenUtil {
 
     private static String SUBJECT;
 
-    private static String PREFIX;
-
     private static SecretKey SECRET_KEY;
 
     @Value("${jwt.expire}")
@@ -36,16 +34,12 @@ public class TokenUtil {
     @Value("${jwt.subject}")
     private String subject;
 
-    @Value("${jwt.prefix}")
-    private String prefix;
-
     @Value("${jwt.key}")
     private String jwtKey;
 
     @PostConstruct
     public void init() {
         ISS = iss;
-        PREFIX = prefix;
         SUBJECT = subject;
         EXPIRE = expire;
         SECRET_KEY = new SecretKeySpec(jwtKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
@@ -67,33 +61,12 @@ public class TokenUtil {
                 .compact();
     }
 
-    //註冊驗證時的TOKEN
-    public static String genToken(String username, int expire) {
-        Date exprierDate = Date.from(Instant.now().plusSeconds(expire));
-        return Jwts.builder()
-                .header()
-                .add("typ", "JWT")
-                .add("alg", "HS256")
-                .and()
-                .claim("username", username)
-                .expiration(exprierDate)
-                .issuedAt(new Date())
-                .subject(SUBJECT)
-                .issuer(ISS)
-                .signWith(SECRET_KEY, Jwts.SIG.HS256)
-                .compact();
-    }
-
     public static Jws<Claims> parseClaim(String token) {
         token = getJwt(token);
         return Jwts.parser()
                 .verifyWith(SECRET_KEY)
                 .build()
                 .parseSignedClaims(token);
-    }
-
-    public static JwsHeader parseHeader(String token) {
-        return parseClaim(token).getHeader();
     }
 
     public static Claims parsePayload(String token) {

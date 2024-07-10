@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -64,7 +63,6 @@ public class SsoServiceImpl implements SsoService {
 
     @Override
     public void register(SsoVo vo) {
-        System.out.println(Argon2SpringUtils.encoder(vo.getPw()));
         Account account = new Account();
         account.setUsername(vo.getLogin());
         account.setPassword(Argon2SpringUtils.encoder(vo.getPw()));

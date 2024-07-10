@@ -1,5 +1,6 @@
 package org.example.cas.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.example.cas.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisServiceImpl implements RedisService {
 
+
     @Autowired
-    RedisTemplate redisTemplate;
+    RedisTemplate<String, String> redisTemplate;
 
-    HashOperations hashOperations;
+    HashOperations<String,String,String> hashOperations;
 
-    public RedisServiceImpl(RedisTemplate<String, String> redisTemplate) {
+    @PostConstruct
+    private void init() {
         this.hashOperations = redisTemplate.opsForHash();
     }
 

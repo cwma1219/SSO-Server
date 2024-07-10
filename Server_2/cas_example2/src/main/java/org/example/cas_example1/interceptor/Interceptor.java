@@ -28,7 +28,7 @@ public class Interceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //檢查有沒有本地的uuid => 驗證後放行
+        //檢查有沒有本地的jwt => 有且驗證後就放行
         Cookie cookieExample2 = RequestUtil.getCookie(request, "example2");
         if (cookieExample2 != null) {
             String jwt = cookieExample2.getValue();
@@ -90,18 +90,6 @@ public class Interceptor implements HandlerInterceptor {
         cookie.setSecure(false);
         cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
-    }
-
-    public Cookie getCookie(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(name)) {
-                    return cookie;
-                }
-            }
-        }
-        return null;
     }
 
     public boolean redirect( HttpServletResponse response) throws IOException {

@@ -23,8 +23,6 @@ public class TokenUtil {
 
     private static String SUBJECT;
 
-    private static String PREFIX;
-
     private static SecretKey SECRET_KEY;
 
     @Value("${jwt.expire}")
@@ -45,7 +43,6 @@ public class TokenUtil {
     @PostConstruct
     public void init() {
         ISS = iss;
-        PREFIX = prefix;
         SUBJECT = subject;
         EXPIRE = expire;
         SECRET_KEY = new SecretKeySpec(jwtKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");

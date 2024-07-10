@@ -30,7 +30,7 @@ public class Interceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        //檢查有沒有本地的uuid => 有就放行
+        //檢查有沒有本地的jwt => 有且驗證後就放行
         Cookie cookieExample1 = RequestUtil.getCookie(request, "example1");
         if (cookieExample1 != null) {
             String jwt = cookieExample1.getValue();
